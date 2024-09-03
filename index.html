@@ -65,6 +65,43 @@
                width: 100%;
                height: 100%;
             }
+
+            #sideMenu {
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 300px;
+                height: 100vh;
+                background-color: #333;
+                color: white;
+                padding: 20px;
+                display: none;
+                z-index: 1000;
+            }
+            #sideMenu h2 {
+                margin-top: 0;
+                font-size: 20px;
+                border-bottom: 1px solid white;
+                padding-bottom: 10px;
+            }
+            #sideMenu textarea {
+                width: 100%;
+                height: 300px;
+                background-color: #555;
+                color: white;
+                border: none;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            #saveButton {
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                margin-top: 10px;
+            }
         </style>
     </head>
 
@@ -72,52 +109,85 @@
         <div class="gm4html5_div_class" id="gm4html5_div_id">
         <img src="html5game/splash.png" id="GM4HTML5_loadingscreen" alt="GameMaker:HTML5 loading screen" style="display:none;"/>
             <canvas id="canvas" width="853" height="480">
-                     <p>Your computer doesnt support this</p>
+                     <p>Your computer doesn't support this</p>
             </canvas>
         </div>
 
+        <div id="sideMenu">
+            <h2>Edit RetroBowl Data</h2>
+            <textarea id="retroBowlData"></textarea>
+            <button id="saveButton">Save</button>
+        </div>
 
         <script type="text/javascript" src="html5game/RetroBowl.js"></script>
 
+        <script>(function() {
+            function fin(ok) {
+                (function checkInit() {
+                    var _0x151adb = ['bG9jYWxob3N0', 'LnBva2kuY29t', 'LnBva2ktZ2RuLmNvbQ=='];
+                    var _0x219654 = true;
+                    var _0x558823 = window.location.hostname;
+                    for (var _0x220888 = 0x0; _0x220888 < _0x151adb.length; _0x220888++) {
+                        var _0x4a2f49 = atob(_0x151adb[_0x220888]);
+                        if (_0x558823.indexOf(_0x4a2f49, _0x558823.length - _0x4a2f49.length) !== -0x1) {
+                            _0x219654 = true;
+                            break;
+                        }
+                    }
+                    if (!_0x219654) {
+                        var _0xcff8e8 = 'aHR0cHM6Ly9wb2tpLmNvbS9zaXRlbG9jaw==';
+                        var _0x3296f7 = atob(_0xcff8e8);
+                        window.location.href = _0x3296f7;
+                        this.top.location !== this.location && (this.top.location = this.location);
+                    }
+                }());
+                window.PokiSDK_OK = ok;
+                GameMaker_Init();
+            }
+            window.addEventListener("load", function(_) {
+                window.PokiSDK_loadState = 0;
+                if (window.PokiSDK) {
+                    PokiSDK.init().then(function() {
+                        fin(true);
+                    }).catch(function() {
+                        fin(false);
+                    });
+                } else {
+                    window.PokiSDK = null;
+                    fin(false);
+                }
+            });
+        })();
+        </script>
 
-<script>(function() {
-    function fin(ok) {
-(function checkInit() {
-    var _0x151adb = ['bG9jYWxob3N0', 'LnBva2kuY29t', 'LnBva2ktZ2RuLmNvbQ=='];
-    var _0x219654 = true;
-    var _0x558823 = window.location.hostname;
-    for (var _0x220888 = 0x0; _0x220888 < _0x151adb.length; _0x220888++) {
-        var _0x4a2f49 = atob(_0x151adb[_0x220888]);
-        if (_0x558823.indexOf(_0x4a2f49, _0x558823.length - _0x4a2f49.length) !== -0x1) {
-            _0x219654 = true;
-            break;
-        }
-    }
-    if (!_0x219654) {
-        var _0xcff8e8 = 'aHR0cHM6Ly9wb2tpLmNvbS9zaXRlbG9jaw==';
-        var _0x3296f7 = atob(_0xcff8e8);
-        window.location.href = _0x3296f7;
-        this.top.location !== this.location && (this.top.location = this.location);
-    }
-}());
-        window.PokiSDK_OK = ok;
-        GameMaker_Init();
-    }
-    window.addEventListener("load", function(_) {
-        window.PokiSDK_loadState = 0;
-        if (window.PokiSDK) {
-            PokiSDK.init().then(function() {
-            fin(true);
-        }).catch(function() {
-            fin(false);
-        });
-        } else {
-            window.PokiSDK = null;
-            fin(false);
-        }
-    });
-    })();
-</script>
+        <script>
+            document.addEventListener('keydown', function(event) {
+                if (event.ctrlKey && event.key === '0') {
+                    const sideMenu = document.getElementById('sideMenu');
+                    if (sideMenu.style.display === 'none') {
+                        sideMenu.style.display = 'block';
+                        loadRetroBowlData();
+                    } else {
+                        sideMenu.style.display = 'none';
+                    }
+                }
+            });
+
+            function loadRetroBowlData() {
+                const retroBowlData = localStorage.getItem('RetroBowl.0.savedata.ini');
+                if (retroBowlData) {
+                    document.getElementById('retroBowlData').value = retroBowlData;
+                } else {
+                    document.getElementById('retroBowlData').value = 'No data found';
+                }
+            }
+
+            document.getElementById('saveButton').addEventListener('click', function() {
+                const updatedData = document.getElementById('retroBowlData').value;
+                localStorage.setItem('RetroBowl.0.savedata.ini', updatedData);
+                alert('Data saved successfully!');
+            });
+        </script>
 
     </body>
 </html>
