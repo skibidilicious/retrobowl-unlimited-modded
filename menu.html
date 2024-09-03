@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit RetroBowl Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        h2 {
+            font-size: 20px;
+            border-bottom: 1px solid white;
+            padding-bottom: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 400px;
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 10px;
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Edit RetroBowl Data</h2>
+    <textarea id="retroBowlData"></textarea>
+    <button id="saveButton">Save</button>
+
+    <script>
+        function loadRetroBowlData() {
+            const retroBowlData = window.opener.localStorage.getItem('RetroBowl.0.savedata.ini');
+            const textarea = document.getElementById('retroBowlData');
+            if (retroBowlData) {
+                try {
+                    const parsedData = JSON.parse(retroBowlData);
+                    textarea.value = JSON.stringify(parsedData, null, 4);
+                } catch (e) {
+                    textarea.value = retroBowlData;
+                }
+            } else {
+                textarea.value = 'No data found';
+            }
+        }
+
+        document.getElementById('saveButton').addEventListener('click', function() {
+            const updatedData = document.getElementById('retroBowlData').value;
+            try {
+                const parsedData = JSON.parse(updatedData);
+                window.opener.localStorage.setItem('RetroBowl.0.savedata.ini', JSON.stringify(parsedData));
+                alert('Data saved successfully!');
+            } catch (e) {
+                window.opener.localStorage.setItem('RetroBowl.0.savedata.ini', updatedData);
+                alert('Data saved successfully!');
+            }
+        });
+
+        window.onload = loadRetroBowlData;
+    </script>
+
+</body>
+</html>
