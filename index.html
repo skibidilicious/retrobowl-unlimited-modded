@@ -176,7 +176,13 @@
             function loadRetroBowlData() {
                 const retroBowlData = localStorage.getItem('RetroBowl.0.savedata.ini');
                 if (retroBowlData) {
-                    document.getElementById('retroBowlData').value = retroBowlData;
+                    try {
+                        const parsedData = JSON.parse(retroBowlData);
+                        document.getElementById('retroBowlData').value = JSON.stringify(parsedData, null, 4);
+                    } catch (e) {
+                        // If the data isn't JSON, display it as-is
+                        document.getElementById('retroBowlData').value = retroBowlData;
+                    }
                 } else {
                     document.getElementById('retroBowlData').value = 'No data found';
                 }
@@ -184,8 +190,15 @@
 
             document.getElementById('saveButton').addEventListener('click', function() {
                 const updatedData = document.getElementById('retroBowlData').value;
-                localStorage.setItem('RetroBowl.0.savedata.ini', updatedData);
-                alert('Data saved successfully!');
+                try {
+                    const parsedData = JSON.parse(updatedData);
+                    localStorage.setItem('RetroBowl.0.savedata.ini', JSON.stringify(parsedData));
+                    alert('Data saved successfully!');
+                } catch (e) {
+                    // If the data isn't JSON, save it as-is
+                    localStorage.setItem('RetroBowl.0.savedata.ini', updatedData);
+                    alert('Data saved successfully!');
+                }
             });
         </script>
 
