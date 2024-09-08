@@ -7,7 +7,7 @@ document.addEventListener('keydown', function(event) {
       view: window,
       bubbles: true,
       cancelable: true,
-      button: 1,
+      button: 2,
       clientX: centerX,
       clientY: centerY
     });
